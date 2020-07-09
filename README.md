@@ -9,7 +9,8 @@ This repository is for getting APNs (Apple Push Notification service) certificat
 By "requests" in the plural, I mean for com.apple.calendar, com.apple.mail, etc., on one server. You may only care about mail or something, but we just get them all.
 
 1. Download macOS Server 5.10 from the Mac App Store, if you haven't already. It is not necessary to open or configure anything in it, just have it available in `/Applications`.
-1. If you've previously generated different certificates:
+1. `git clone https://github.com/scintill/macos-server-apns-certs.git` in a convenient folder
+1. If you've previously generated different certificates using this code:
 	* **Copy the certificates and private keys somewhere else(!)**
 	* run `make clean` to erase the old data and start clean for the next certificates.
 1. Configure
