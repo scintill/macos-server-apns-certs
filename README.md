@@ -2,11 +2,16 @@ This repository is for getting APNs (Apple Push Notification service) certificat
 
 # Requirements
 
-* macOS (tested on Catalina) and the macOS Server app 5.10 from Mac App Store
+* macOS (tested on Catalina) and the macOS Server app 5.10 downloaded from the Mac App Store
 
 # Creating the certificate requests
 
-1. Install macOS Server 5.10
+By "requests" in the plural, I mean for com.apple.calendar, com.apple.mail, etc., on one server. You may only care about mail or something, but we just get them all.
+
+1. Download macOS Server 5.10 from the Mac App Store, if you haven't already. It is not necessary to open or configure anything in it, just have it available in `/Applications`.
+1. If you've previously generated different certificates:
+	* **Copy the certificates and private keys somewhere else(!)**
+	* run `make clean` to erase the old data and start clean for the next certificates.
 1. Configure
 	* `echo -n yourHostName > config/hostname` (the hostname you give here is displayed in the certificates portal webpage)
 	* `echo -n yourAppleID@example.com > config/username` (you should probably use one you've purchased macOS Server with, but I haven't tried whether they require that)
@@ -66,7 +71,7 @@ X-Frame-Options: SAMEORIGIN
 
 Your certificates should be in the file `response`. The private keys are in the `keys` directory.
 
-Manage your certificates at https://identity.apple.com/pushcert/ .
+You can view and revoke your certificates at https://identity.apple.com/pushcert/ at the bottom.
 
 # "Makefiles?!"
 
