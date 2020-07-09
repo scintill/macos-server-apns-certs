@@ -19,6 +19,55 @@ This repository is for getting APNs (Apple Push Notification service) certificat
 curl -i --data-binary @request-body -H 'Content-Type: text/x-xml-plist' --user-agent 'Servermgrd%20Plugin/6.0 CFNetwork/811.11 Darwin/16.7.0 (x86_64)' https://identity.apple.com/pushcert/caservice/new -H 'Accept: */*' -H 'Accept-Language: en-us' | tee response
 ```
 
+A success response starts something like this:
+
+```
+HTTP/1.1 100 Continue
+
+HTTP/1.1 200 
+Server: Apple
+Date: Thu, 09 Jul 2020 05:42:01 GMT
+Content-Type: text/x-xml-plist
+Content-Length: 12992
+Connection: keep-alive
+Cache-Control: no-cache
+Strict-Transport-Security: max-age=31536000; includeSubdomains
+X-Frame-Options: SAMEORIGIN
+Host: identity.apple.com
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Strict-Transport-Security: max-age=31536000; includeSubdomains
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Host: identity.apple.com
+X-Frame-Options: SAMEORIGIN
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Response</key>
+    <dict>
+        <key>Status</key>
+        <dict>
+            <key>ErrorDescription</key>
+            <string></string>
+            <key>ErrorMessage</key>
+            <string></string>
+            <key>ErrorCode</key>
+            <integer>0</integer>
+        </dict>
+        <key>Certificates</key>
+        <array>
+            <dict>
+                <key>Certificate</key>
+                <string>-----BEGIN CERTIFICATE-----
+```
+
 Your certificates should be in the file `response`. The private keys are in the `keys` directory.
 
 Manage your certificates at https://identity.apple.com/pushcert/ .
+
+# "Makefiles?!"
+
+Yeah, it's kind of horrible, but I think it was a decent way to iteratively build up the pieces of the request data during the development process. I only anticipate needing this once a year, so I might not make a nicer implementation...
