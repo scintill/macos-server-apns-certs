@@ -11,7 +11,7 @@ This repository is for getting APNs (Apple Push Notification service) certificat
 	* `echo -n yourHostName > config/hostname` (the hostname you give here is displayed in the certificates portal webpage)
 	* `echo -n yourAppleID@example.com > config/username` (you should probably use one you've purchased macOS Server with, but I haven't tried whether they require that)
 	* `openssl dgst -sha256 -binary | xxd -p -c 32 > config/passwdhash # type your password, then Ctrl-D Ctrl-D`
-1. Run `make request-body`. You should sanity-check the contents compared to test/expected/request-body.
+1. Run `make request-body`. You should sanity-check the contents compared to `test/expected/request-body`.
 
 # Sending your certificate request
 
