@@ -1,0 +1,2 @@
+#!/bin/sh
+env DYLD_INSERT_LIBRARIES=./dylib.dylib lldb ./hashy

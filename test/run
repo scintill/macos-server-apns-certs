@@ -1,0 +1,7 @@
+#!/bin/sh
+make clean
+git checkout -- keys/
+make -C hashy arc4zero.dylib
+
+mkdir csrs
+make test
