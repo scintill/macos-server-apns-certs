@@ -133,7 +133,7 @@ PushCertRequestPlist: csrs/com.apple.servermgrd.apns.calendar csrs/com.apple.ser
 
 csrs/%: keys/%
 	mkdir csrs || true
-	openssl req -batch -new -key $< -sha1 -subj /CN=$(shell basename $@)/C=US -out $@
+	openssl req -batch -new -key $< -sha1 -config openssl.cnf -subj /CN=$(shell basename $@)/C=US -out $@
 
 .PRECIOUS: keys/%
 keys/%:
