@@ -8,3 +8,7 @@ hashy.macho: hashy.c
 
 random_zero.so: random_zero.c
 	cc -shared -o $@ $<
+
+.PHONY: clean
+clean:
+	rm -f hashy hashy.macho random_zero.so

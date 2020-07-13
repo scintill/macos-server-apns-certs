@@ -145,6 +145,7 @@ hashy/hashy: always
 .PHONY: clean
 clean:
 	rm -f PushCertCertificateChain PushCertRequestPlist PushCertSignature csrs/* keys/* request-body
+	make -C hashy clean
 
 .PHONY: test
 test: request-body
