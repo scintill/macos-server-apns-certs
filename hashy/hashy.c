@@ -14,8 +14,20 @@ struct signature_in {
 	char sha1_hash[20];
 } __attribute__ ((packed));
 
+#define SUPPRESS_DLOPEN_ERRORS
+
 int main(int argc, char *argv[]) {
+
+#ifdef SUPPRESS_DLOPEN_ERRORS
+	int savedStderr = dup(2);
+	close(2);
+#endif
 	void *dlh = dlopen("@executable_path/servermgr_certs", 0);
+#ifdef SUPPRESS_DLOPEN_ERRORS
+	dup2(savedStderr, 2);
+	close(savedStderr);
+#endif
+
 	if (!dlh) {
 		dprintf(2, "dlopen error = %s\n", dlerror());
 	}
