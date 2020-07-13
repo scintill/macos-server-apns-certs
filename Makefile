@@ -3,20 +3,20 @@ request-body: PushCertCertificateChain PushCertSignature
 		printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" ;\
 		printf "<plist version=\"1.0\">\n<dict>\n" ;\
 		printf "	<key>PushCertCertificateChain</key>\n	<data>\n" ;\
-		base64 -b68 PushCertCertificateChain | sed s/^/'	'/ ;\
+		base64 -w68 PushCertCertificateChain | sed s/^/'	'/ ;\
 		printf "	</data>\n	<key>PushCertRequestPlist</key>\n	<data>\n" ;\
-		base64 -b68 PushCertRequestPlist | sed s/^/'	'/ ;\
+		base64 -w68 PushCertRequestPlist | sed s/^/'	'/ ;\
 		printf "	</data>\n	<key>PushCertSignature</key>\n	<data>\n" ;\
-		base64 -b68 PushCertSignature | sed s/^/'	'/ ;\
+		base64 -w68 PushCertSignature | sed s/^/'	'/ ;\
 		printf "	</data>\n	<key>PushCertSignedRequest</key>\n	<true/>\n" ;\
 		printf "</dict>\n</plist>\n" ;\
 	) > $@
 
-PushCertCertificateChain: hashy/hashy hashy/arc4zero.dylib
-	echo "" | env DYLD_INSERT_LIBRARIES=./hashy/arc4zero.dylib hashy/hashy 0 > $@
+PushCertCertificateChain: hashy/hashy
+	echo "nnnnnnnnnnnnnnnnnnnn" | hashy/hashy 0 > $@
 
-PushCertSignature: PushCertRequestPlist hashy/hashy hashy/arc4zero.dylib
-	openssl sha1 -binary $< | env DYLD_INSERT_LIBRARIES=./hashy/arc4zero.dylib hashy/hashy 1 > $@
+PushCertSignature: PushCertRequestPlist hashy/hashy
+	openssl sha1 -binary $< | hashy/hashy 1 > $@
 
 PushCertRequestPlist: csrs/com.apple.servermgrd.apns.calendar csrs/com.apple.servermgrd.apns.contact csrs/com.apple.servermgrd.apns.mail csrs/com.apple.servermgrd.apns.mgmt csrs/com.apple.server.apns.alerts config/username config/hostname
 	( \
@@ -137,11 +137,10 @@ keys/%:
 	mkdir keys || true
 	openssl genrsa -out $@ 2048
 
-hashy/hashy:
-	make -C hashy hashy
+.PHONY: always
 
-hashy/arc4zero.dylib:
-	make -C hashy arc4zero.dylib
+hashy/hashy: always
+	make -C hashy hashy
 
 .PHONY: clean
 clean:
@@ -149,5 +148,5 @@ clean:
 
 .PHONY: test
 test: request-body
-	@cat expected/$< | md5
-	@cat $< | md5
+	@cat expected/$< | md5sum
+	@cat $< | md5sum

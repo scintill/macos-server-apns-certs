@@ -1,2 +1,0 @@
-#!/bin/sh
-sudo env DYLD_INSERT_LIBRARIES=./dylib.dylib ~/tmp/gdb-9.2/prefix/bin/gdb --args ./hashy 0

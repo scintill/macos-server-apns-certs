@@ -15,7 +15,7 @@ struct signature_in {
 } __attribute__ ((packed));
 
 int main(int argc, char *argv[]) {
-	void *dlh = dlopen("/Applications/Server.app/Contents/ServerRoot/usr/share/servermgrd/bundles/servermgr_certs.bundle/Contents/MacOS/servermgr_certs", 0);
+	void *dlh = dlopen("@executable_path/servermgr_certs", 0);
 	if (!dlh) {
 		dprintf(2, "dlopen error = %s\n", dlerror());
 	}
@@ -28,7 +28,18 @@ int main(int argc, char *argv[]) {
 	struct signature_in signature_in = {
 		._a = 0xe2b050609302130, ._b = 0x51a0203, ._c = 0x400, ._d = 0x14,
 	};
-	read(0, signature_in.sha1_hash, sizeof(signature_in.sha1_hash)); // XXX doesn't re-read if the read didn't fill
+
+	ssize_t numRead = 0;
+	do {
+		ssize_t n = read(0, &signature_in.sha1_hash[numRead], sizeof(signature_in.sha1_hash) - numRead);
+		if (n < 0) {
+			dprintf(2, "read error\n");
+			return 1;
+		}
+		numRead += n;
+		sleep(1); // go easy on the CPU in case we loop a lot for some reason
+	} while (numRead < 20);
+
 	char certSignatureBytes[256];
 	char certchain[4000];
 	uint64_t certSignatureBytesSize = sizeof(certSignatureBytes), certchainSize = sizeof(certchain);

@@ -1,3 +1,3 @@
 hashy
-hashy.dSYM/
-dylib.dylib
+hashy.macho
+random_zero.so

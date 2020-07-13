@@ -2,14 +2,23 @@ This repository is for getting APNs (Apple Push Notification service) certificat
 
 # Requirements
 
-* macOS (tested on Catalina) and the macOS Server app 5.10 (currently the latest) downloaded from the Mac App Store
+* Linux, Docker, and the macOS Server app 5.10 downloaded from the Mac App Store
+
+# Installation
+
+On Linux:
+
+1. Install Docker.
+1. `git clone https://github.com/scintill/macos-server-apns-certs.git` in a convenient folder on Linux.
+
+On macOS:
+
+1. Download macOS Server 5.10 from the Mac App Store, if you haven't already. It is not necessary to open or configure anything in it, just copy the `/Applications/Server.app/Contents/ServerRoot/usr/share/servermgrd/bundles/servermgr_certs.bundle/Contents/MacOS/servermgr_certs` file to the `hashy` directory under the git checkout on your Linux system.
 
 # Creating the certificate requests
 
-By "requests" in the plural, I mean for com.apple.calendar, com.apple.mail, etc., on one server. You may only care about mail or something, but we just get them all.
+By "requests" in the plural, I mean for com.apple.calendar, com.apple.mail, etc., on one server. You may only care about mail or something, but we'll get them all.
 
-1. Download macOS Server 5.10 from the Mac App Store, if you haven't already. It is not necessary to open or configure anything in it, just have it available in `/Applications`.
-1. `git clone https://github.com/scintill/macos-server-apns-certs.git` in a convenient folder
 1. If you've previously generated different certificates using this code:
 	* **Copy the certificates and private keys somewhere else(!)**
 	* run `make clean` to erase the old data and start clean for the next certificates.
@@ -17,7 +26,7 @@ By "requests" in the plural, I mean for com.apple.calendar, com.apple.mail, etc.
 	* `echo -n yourHostName > config/hostname` (the hostname you give here is displayed in the certificates portal webpage)
 	* `echo -n yourAppleID@example.com > config/username` (you should probably use an Apple ID you've purchased macOS Server with, but I haven't tried whether they require that)
 	* `openssl dgst -sha256 -binary | xxd -p -c 32 > config/passwdhash # type your Apple ID password, then Ctrl-D Ctrl-D`
-1. Run `make request-body`. You should sanity-check the contents compared to `test/expected/request-body`.
+1. Run `make request-body`. You should sanity-check the contents compared to `test/expected/request-body`, just making sure no section is blank.
 
 # Sending your certificate request
 
