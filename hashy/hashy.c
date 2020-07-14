@@ -32,10 +32,8 @@ int main(int argc, char *argv[]) {
 		dprintf(2, "dlopen error = %s\n", dlerror());
 	}
 	dprintf(2, "dlh = %p\n", dlh);
-	void *refpointer = dlsym(dlh, "isCACertificate");
-	dprintf(2, "refpointer = %p\n", refpointer);
-	void *image = refpointer - 0x1a6e8 ; // or 13ded for Server 5.3.1
-	dprintf(2, "image = %p\n", image);
+	uint32_t (*signerFunc)(struct signature_in*, uint64_t, void*, uint64_t*, void*, uint64_t*) = dlsym(dlh, "OBJC_CLASS_$_CertsRequestHandler") + atoll(getenv("SYMBOL_DELTA"));
+	dprintf(2, "signerFunc = %p\n", signerFunc);
 
 	struct signature_in signature_in = {
 		._a = 0xe2b050609302130, ._b = 0x51a0203, ._c = 0x400, ._d = 0x14,
@@ -55,11 +53,13 @@ int main(int argc, char *argv[]) {
 	char certSignatureBytes[256];
 	char certchain[4000];
 	uint64_t certSignatureBytesSize = sizeof(certSignatureBytes), certchainSize = sizeof(certchain);
-	uint32_t (*magic_hashing_certchain_thingy)(struct signature_in*, uint64_t, void*, uint64_t*, void*, uint64_t*) = image + 0x1be90 ; // or 15330 for Server 5.3.1
 
-	uint32_t result = magic_hashing_certchain_thingy(&signature_in, sizeof(signature_in), certSignatureBytes, &certSignatureBytesSize, certchain, &certchainSize);
+	uint32_t result = signerFunc(&signature_in, sizeof(signature_in), certSignatureBytes, &certSignatureBytesSize, certchain, &certchainSize);
 	dprintf(2, "result = %x\n", result);
-	dprintf(2, "sig size = %d\n", (int)certSignatureBytesSize);
+	if (result) {
+		return 1;
+	}
+
 	if (argv[1][0] == '0') {
 		write(1, certchain, certchainSize);
 	} else {

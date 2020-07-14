@@ -1,8 +1,8 @@
-This repository is for getting APNs (Apple Push Notification service) certificates for, e.g., push email notifications on iOS. The certificate generation function has become unavailable on modern systems (typically requiring keeping an old VM around), so this project seeks to make it easier.
+This repository is for getting APNs (Apple Push Notification service) certificates for, e.g., IMAP email push notifications on iOS. The certificate generation function has become unavailable on modern systems (typically requiring keeping an old VM around), so this project seeks to make it easier.
 
 # Requirements
 
-* Linux, Docker, and the macOS Server app 5.10 downloaded from the Mac App Store
+* Linux, Docker, and the macOS Server app (any version), available in the Mac App Store
 
 # Installation
 
@@ -13,7 +13,7 @@ On Linux:
 
 On macOS:
 
-1. Download macOS Server 5.10 from the Mac App Store, if you haven't already. It is not necessary to open or configure anything in it, just copy the `/Applications/Server.app/Contents/ServerRoot/usr/share/servermgrd/bundles/servermgr_certs.bundle/Contents/MacOS/servermgr_certs` file to the `hashy` directory under the git checkout on your Linux system.
+1. Download macOS Server from the Mac App Store, if you haven't already. It is not necessary to open or configure anything in it, just copy the `/Applications/Server.app/Contents/ServerRoot/usr/share/servermgrd/bundles/servermgr_certs.bundle/Contents/MacOS/servermgr_certs` file to the `hashy` directory under the git checkout on your Linux system.
 
 # Creating the certificate requests
 
