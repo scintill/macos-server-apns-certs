@@ -9,15 +9,7 @@ WORKDIR /src
 
 RUN make release
 
-
-FROM ubuntu:latest
-
-COPY --from=0 /src/libmac.so /usr/local/maloader/
-COPY --from=0 /src/extract /usr/local/maloader/
-COPY --from=0 /src/macho2elf /usr/local/maloader/
-COPY --from=0 /src/ld-mac /usr/local/maloader/
-
-ENV PATH="/usr/local/maloader:$PATH"
+ENV PATH="/src:$PATH"
 
 RUN mkdir /workdir
 WORKDIR /workdir
