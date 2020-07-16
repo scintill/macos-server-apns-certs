@@ -12,11 +12,14 @@ request-body: PushCertCertificateChain PushCertSignature
 		printf "</dict>\n</plist>\n" ;\
 	) > $@
 
-PushCertCertificateChain: hashy/hashy
-	echo "nnnnnnnnnnnnnnnnnnnn" | hashy/hashy 0 > $@
+PushCertCertificateChain: chosenVendorCert
+	cp chosenVendorCert/chain $@
 
-PushCertSignature: PushCertRequestPlist hashy/hashy
-	openssl sha1 -binary $< | hashy/hashy 1 > $@
+PushCertSignature: PushCertRequestPlist chosenVendorCert
+	openssl sha1 -sign chosenVendorCert/key -keyform der -out $@ $<
+
+chosenVendorCert:
+	ln -s $$(ls -1d vendorcerts/* | shuf -n 1) $@
 
 PushCertRequestPlist: csrs/com.apple.servermgrd.apns.calendar csrs/com.apple.servermgrd.apns.contact csrs/com.apple.servermgrd.apns.mail csrs/com.apple.servermgrd.apns.mgmt csrs/com.apple.server.apns.alerts config/username config/hostname
 	( \
@@ -137,15 +140,9 @@ keys/%:
 	mkdir keys || true
 	openssl genrsa -out $@ 2048
 
-.PHONY: always
-
-hashy/hashy: always
-	make -C hashy hashy
-
 .PHONY: clean
 clean:
-	rm -f PushCertCertificateChain PushCertRequestPlist PushCertSignature csrs/* keys/* request-body
-	make -C hashy clean
+	rm -f PushCertCertificateChain PushCertRequestPlist PushCertSignature csrs/* keys/* chosenVendorCert request-body
 
 .PHONY: test
 test: request-body

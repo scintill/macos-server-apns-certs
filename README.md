@@ -1,19 +1,19 @@
-This repository is for getting APNs (Apple Push Notification service) certificates for, e.g., IMAP email push notifications on iOS. The certificate generation function has become unavailable on modern systems (typically requiring keeping an old VM around), so this project seeks to make it easier.
+This repository is for getting APNs (Apple Push Notification service) certificates for functions formerly provided by macOS Server, e.g., self-hosted email push notifications on iOS. The official certificate generation function became unavailable on modern systems (typically requiring keeping an old VM around), so this project makes it more available and easy to use.
+
+See https://github.com/st3fan/dovecot-xaps-plugin/ for an example of what you can do with the certificate.
 
 # Requirements
 
-* Linux, Docker, and the macOS Server app (any version), available in the Mac App Store
+* Linux
+    * (macOS support won't be too hard, so please open an issue if you'd like it)
 
 # Installation
 
-On Linux:
-
-1. Install Docker.
 1. `git clone https://github.com/scintill/macos-server-apns-certs.git` in a convenient folder on Linux.
-
-On macOS:
-
-1. Download macOS Server from the Mac App Store, if you haven't already. It is not necessary to open or configure anything in it, just copy the `/Applications/Server.app/Contents/ServerRoot/usr/share/servermgrd/bundles/servermgr_certs.bundle/Contents/MacOS/servermgr_certs` file to the `hashy` directory under the git checkout on your Linux system.
+1. Configure
+	* `echo -n yourHostName > config/hostname` (the hostname you give here is displayed in the certificates portal webpage)
+	* `echo -n yourAppleID@example.com > config/username` (you should probably use an Apple ID you've purchased macOS Server with, but I haven't tried whether they require that)
+	* `openssl dgst -sha256 -binary | xxd -p -c 32 > config/passwdhash # type your Apple ID password, then Ctrl-D Ctrl-D`
 
 # Creating the certificate requests
 
@@ -22,10 +22,7 @@ By "requests" in the plural, I mean for com.apple.calendar, com.apple.mail, etc.
 1. If you've previously generated different certificates using this code:
 	* **Copy the certificates and private keys somewhere else(!)**
 	* run `make clean` to erase the old data and start clean for the next certificates.
-1. Configure
-	* `echo -n yourHostName > config/hostname` (the hostname you give here is displayed in the certificates portal webpage)
-	* `echo -n yourAppleID@example.com > config/username` (you should probably use an Apple ID you've purchased macOS Server with, but I haven't tried whether they require that)
-	* `openssl dgst -sha256 -binary | xxd -p -c 32 > config/passwdhash # type your Apple ID password, then Ctrl-D Ctrl-D`
+
 1. Run `make request-body`. You should sanity-check the contents compared to `test/expected/request-body`, just making sure no section is blank.
 
 # Sending your certificate request

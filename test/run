@@ -1,6 +1,6 @@
 #!/bin/sh
 make clean
-git checkout -- keys/
+git checkout -- keys/ chosenVendorCert
 
 mkdir csrs
 make test
