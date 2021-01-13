@@ -1,6 +1,6 @@
-This repository is for getting APNs (Apple Push Notification service) certificates for functions formerly provided by macOS Server, e.g., self-hosted email push notifications on iOS. The official certificate generation function became unavailable on modern systems (typically requiring keeping an old VM around), so this project makes it more available and easy to use.
+This repository is for getting APNs (Apple Push Notification service) certificates for functions formerly provided by macOS Server, e.g., push notifications from your self-hosted email server to iOS's built-in Mail app. Apple's own certificate generation function became unavailable on modern systems (typically requiring keeping an old VM around), so this project makes it more available and easy-to-use.
 
-See https://github.com/st3fan/dovecot-xaps-plugin/ for an example of what you can do with the certificate.
+**Note**: See https://github.com/freswa/dovecot-xaps-daemon for a more polished and automated way to manage your mail certificate.
 
 # Requirements
 
