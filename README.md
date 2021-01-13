@@ -11,7 +11,7 @@ This repository is for getting APNs (Apple Push Notification service) certificat
 
 1. `git clone https://github.com/scintill/macos-server-apns-certs.git` in a convenient folder on Linux.
 1. Configure
-	* `echo -n yourHostName > config/hostname` (the hostname you give here is displayed in the certificates portal webpage)
+	* `echo -n yourHostName > config/hostname` (the hostname you give here is displayed in [the certificates portal webpage](https://identity.apple.com/pushcert/))
 	* `echo -n yourAppleID@example.com > config/username` (you should probably use an Apple ID you've purchased macOS Server with, but I haven't tried whether they require that)	
 	* `openssl dgst -sha256 -binary | xxd -p -c 32 > config/passwdhash # type your Apple ID password, then Ctrl-D Ctrl-D`
 		* (There is [no need for an app password](https://github.com/scintill/macos-server-apns-certs/issues/3) if you have 2FA. Use your normal password.)
